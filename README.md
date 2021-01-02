@@ -1,7 +1,7 @@
 # face-mask-detector
 
 TO INSTALL THE REQUIRED LIBRARIES: 
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt  
 [NOTE: use pip if you have pip configured in place of pip3]
 
 
