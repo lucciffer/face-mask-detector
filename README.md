@@ -15,7 +15,7 @@ FOR TRAINING THE MDOEL:
 1. Run 'train-mask-detector.py' file to start training.
 2. Once training is completed, run 'mask-detector.py' to test the model in real time.
 
-TThis project is tested and works fine, with no possible errors found,
+This project is tested and works fine, with no possible errors found,
 In case of errors(if any), please report it to techh.engine@gmail.com
 
 If you end up liking this project, make sure to follow me on GitHub.
