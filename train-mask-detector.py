@@ -28,15 +28,17 @@ INIT_LR = 1e-4
 EPOCHS = 20
 BS = 32
 
+# root directory of the dataset
 DIRECTORY = r"/home/lucciffer/WORK/Machine Learning/ComputerVision/Mask Detection/dataset"
+# sub folders/categories/classes of the dataset
 CATEGORIES = ["with_mask", "without_mask"]
 
 # grab the list of images in our dataset directory, then initialize
 # the list of data (i.e., images) and class images
 print("[INFO] loading images...")
 
-data = []
-labels = []
+data = []  # loading train data (X inputs)
+labels = [] # loading labels of corresponding X
 
 for category in CATEGORIES:
     path = os.path.join(DIRECTORY, category)
@@ -57,6 +59,7 @@ labels = to_categorical(labels)
 data = np.array(data, dtype="float32")
 labels = np.array(labels)
 
+# split train and test data
 (trainX, testX, trainY, testY) = train_test_split(data, labels,
 	test_size=0.20, stratify=labels, random_state=42)
 
@@ -72,6 +75,7 @@ aug = ImageDataGenerator(
 
 # load the MobileNetV2 network, ensuring the head FC layer sets are
 # left off
+# uses imagenet weights, can be set to None if new weights are to be trained
 baseModel = MobileNetV2(weights="imagenet", include_top=False,
 	input_tensor=Input(shape=(224, 224, 3)))
 
@@ -90,14 +94,16 @@ model = Model(inputs=baseModel.input, outputs=headModel)
 
 # loop over all layers in the base model and freeze them so they will
 # *not* be updated during the first training process
+# if updating of old parameters are requires then set layer.trainable=True
 for layer in baseModel.layers:
 	layer.trainable = False
 
 # compile our model
 print("[INFO] compiling model...")
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
-model.compile(loss="binary_crossentropy", optimizer=opt,
+model.compile(loss="binary_crossentropy", optimizer=opt, 
 	metrics=["accuracy"])
+# use categorical_crossentropy if number of classes > 2
 
 # train the head of the network
 print("[INFO] training head...")
